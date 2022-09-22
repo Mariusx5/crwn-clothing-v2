@@ -81,6 +81,7 @@ const SignInForm = () => {
           name='password'
           value={password}
         />
+        {//innerhalb forms ist button standartmäßig vom typ submit, um das zu verhindern, hier type="button"}
         <div className='buttons-container'>
           <Button type='submit'>Sign In</Button>
           <Button type='button' buttonType='google' onClick={signInWithGoogle}>
