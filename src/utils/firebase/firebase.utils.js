@@ -1,20 +1,10 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-
+import { initializeApp } from 'firebase/app';
 import {
-    getAuth,
-    signInWithRedirect,
-    signInWithPopup,
-    GoogleAuthProvider
+  getAuth,
+  signInWithRedirect,
+  signInWithPopup,
+  GoogleAuthProvider,
 } from 'firebase/auth';
-
-import {
-    getFirestore,
-    doc, // get data out of our db
-    getDoc,
-    setDoc
-} from 'firebase/firestore';
-
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -29,47 +19,19 @@ const firebaseConfig = {
   appId: "1:682148963201:web:bdf986694f003736d13e80"
 };
 
-// Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
 
 const provider = new GoogleAuthProvider();
 
-
 provider.setCustomParameters({
-    promt: "select_account"
+  prompt: 'select_account',
 });
+
+export const createUserProfileDocument = async (userAuth, additionalData) => {
+  if (!userAuth) return;
+
+  console.log(userAuth);
+};
 
 export const auth = getAuth();
 export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
-
-export const db = getFirestore();
-
-export const createUserDocumentFromAuth = async (userAuth) =>{
-    const userDocRef = doc(db, 'users', userAuth.uid);
-
-    //console.log(userDocRef);
-
-    const userSnapShot = await getDoc(userDocRef);
-/*     console.log(userSnapShot)
-    console.log(userSnapShot.exists()); */
-
-
-//set user data if not existing
-  if(!userSnapShot.exists()){
-    const { displayName, email} = userAuth;
-    const createdAt = new Date();
-    
-    try {
-      await setDoc(userDocRef,{
-        displayName,
-        email,
-        createdAt
-      });
-    } catch(error){
-        console.log('error creating the user', error.message);
-    }
-
-    return userDocRef;
-  }
-
-}
